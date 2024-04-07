@@ -14,14 +14,15 @@ Before running any code snippets, make sure to activate the environment.
 
 ## Submissions
 Proposal: [``GODBERSJ-23377840_proposal.pdf``](https://github.com/jule-go/GermanSentiment/blob/main/GODBERSJ-23377840_proposal.pdf)
+
 Final Report: [``GODBERSJ-23377840.pdf``](https://github.com/jule-go/GermanSentiment/blob/main/GODBERSJ-23377840.pdf)
 
-## Some information on this repository
-* [``data.ipynb``-file](https://github.com/jule-go/GermanSentiment/blob/main/data.ipynb) deals with the preparation of the dataset(s). It includes balancing the datasets, creating train, dev and test splits, and translating the text instances.
-* [``data_analysis.ipynb``-file](https://github.com/jule-go/GermanSentiment/blob/main/data_analysis.ipynb) provides functionality to analyze a dataset
-* [``data_loading.py``-file](https://github.com/jule-go/GermanSentiment/blob/main/data_loading.py) makes sure we can load the dataset contents into the correct formats needed as input for the models.
-* [``evaluation.py``-file](https://github.com/jule-go/GermanSentiment/blob/main/evaluation.py) lets one evaluate the performance of a model on test data
-* [``model_definition.py``-file](https://github.com/jule-go/GermanSentiment/blob/main/model_definition.py) defines the architecture of the model used within this project
-* [``requirements.txt``-file](https://github.com/jule-go/GermanSentiment/blob/main/requirements.txt) contains requirements for python environment that are needed to run the code within this repository.
-* [``training_logging.md``-file](https://github.com/jule-go/GermanSentiment/blob/main/training_logging.md) provides an overview of the hyperparameter tuning
-* [``training.py``-file](https://github.com/jule-go/GermanSentiment/blob/main/training.py) lets one train a model on training data
+## Some information on files within this repository
+* [``data.ipynb``](https://github.com/jule-go/GermanSentiment/blob/main/data.ipynb) deals with the preparation of the dataset(s). It includes balancing the datasets, creating train, dev and test splits, and translating the text instances.
+* [``data_analysis.ipynb``](https://github.com/jule-go/GermanSentiment/blob/main/data_analysis.ipynb) provides functionality to analyze a dataset
+* [``data_loading.py``](https://github.com/jule-go/GermanSentiment/blob/main/data_loading.py) makes sure we can load the dataset contents into the correct formats needed as input for the models.
+* [``evaluation.py``](https://github.com/jule-go/GermanSentiment/blob/main/evaluation.py) lets one evaluate the performance of a model on test data
+* [``model_definition.py``](https://github.com/jule-go/GermanSentiment/blob/main/model_definition.py) defines the architecture of the model used within this project
+* [``requirements.txt``](https://github.com/jule-go/GermanSentiment/blob/main/requirements.txt) contains requirements for python environment that are needed to run the code within this repository.
+* [``training_logging.md``](https://github.com/jule-go/GermanSentiment/blob/main/training_logging.md) provides an overview of the hyperparameter tuning
+* [``training.py``](https://github.com/jule-go/GermanSentiment/blob/main/training.py) lets one train a model on training data
