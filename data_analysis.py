@@ -107,4 +107,4 @@ dev_data = data_loading.load_own_dataset(dataset,dev_ids,None)
 test_data = data_loading.load_own_dataset(dataset,test_ids,None)
 
 # call the actual analysis
-analyze_dataset([train_data,dev_data,test_data],True,"/mount/studenten-temp1/users/godberja/GermanSentiment/analysis/data.txt")
+analyze_dataset([train_data,dev_data,test_data],True,"/mount/studenten-temp1/users/godberja/GermanSentiment/analysis/german_small_analysis.txt")
