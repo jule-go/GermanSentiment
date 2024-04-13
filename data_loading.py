@@ -58,7 +58,7 @@ class SentimentAnalysisData(Dataset):
         Args:
             data (Huggingface dataset): Underlying dataset of this project
             data_ids (list): List of ids that represent instances of this datasplit
-            translations (dict): keys are ids of data instance, values are the according translations
+            translations (dict): keys are texts of data instances, values are the according translations
         """ 
         self.texts = [] 
         self.labels = [] 
@@ -71,7 +71,7 @@ class SentimentAnalysisData(Dataset):
             self.labels += [current_instance["label"]]
             self.sources += [current_instance["original_dataset"]]
             if translations:
-                self.texts += [translations[data_id]]
+                self.texts += [translations[current_instance["text"]]]
             else:
                 self.texts += [current_instance["text"]]
     

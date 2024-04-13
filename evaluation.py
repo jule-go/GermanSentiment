@@ -10,9 +10,11 @@ from model_definition import Classifier
 import numpy as np
 from datasets import load_dataset
 from sklearn import metrics
+import statistics
 from sklearn.metrics import ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import numpy as np
+import json
 
 
 # -----------------------------------------------------------------------------------------
@@ -197,11 +199,141 @@ def validateAndTest(model,dev_dataloader,test_dataloader,loss_function,test_data
     make_predictions(test_data,model,prediction_path)
 
 
+def analyze_quantitatively(predictions, dataset, printing=False, path_to_save_evaluation_to=None):
+    """Analyzes the predictions of a model quantitatively, e.g. looking at its accuracy, generating a confusion matrix
+
+    Args:
+        predictions (list): List of items, where each item has an id, text, predicted label, gold label, probability distribution over prediction
+        dataset: Dataset from Huggingface with all the data sampels
+        printing (bool, optional): If true, it prints the results of this analysis to terminal. Defaults to False.
+        path_to_save_evaluation_to (str, optional): If path is provided, the results of this analysis are saved to this file. Defaults to None.
+    """
+
+    # investigate general performance of model
+    preds = [datapoint["pred"] for datapoint in predictions]
+    golds = [datapoint["gold"] for datapoint in predictions]
+    accuracy = "Accuracy: "+str(metrics.accuracy_score(golds, preds))+"\n"
+    f_score = "F1-score: "+str(metrics.f1_score(golds, preds, average="weighted"))+"\n"
+
+    # investigate confidence of model
+    label_probs = [max(datapoint["prob"]) for datapoint in predictions]
+    avg_prob = round(sum(label_probs) / len(label_probs),3)
+    min_prob = min(label_probs)
+    max_prob = max(label_probs)
+    median_prob = round(statistics.median(label_probs),3)
+    std_prob = round(statistics.stdev(label_probs),3)
+    confidence = "Confidence of model: "+str(avg_prob)+"[avg]\t"+str(std_prob)+"[std dev]\t"+str(min_prob)+"[min]\t"+str(max_prob)+"[max]\t"+str(median_prob)+"[median]\n"
+
+    # generate a confusion matrix 
+    conf_matrix = np.array2string(metrics.confusion_matrix(golds,preds,labels=["0","1","2"]))
+    confusion = "Confusion matrix: \n"+str(conf_matrix)+"\n"
+    ConfusionMatrixDisplay.from_predictions(golds,preds)
+    plt.title(str("Confusion Matrix"))
+    if path_to_save_evaluation_to:
+        plt.savefig(str(path_to_save_evaluation_to+"_confusionMatrix.jpg")) 
+    plt.close()
+
+    # look at difference across "genre"
+    ids = [datapoint["id"] for datapoint in predictions]
+    sources = [dataset["train"][data_id]["original_dataset"] for data_id in ids]
+    twitter_preds = []
+    twitter_golds = []
+    review_preds = []
+    review_golds = []
+    for i, src in enumerate(sources):
+        if "amazon" in src:
+            review_preds += [predictions[i]["pred"]]
+            review_golds += [predictions[i]["gold"]]
+        else: # "twitter" in src:
+            twitter_preds += [predictions[i]["pred"]]
+            twitter_golds += [predictions[i]["gold"]]
+    twitter_accuracy = "Accuracy on twitter data only: "+str(metrics.accuracy_score(twitter_golds, twitter_preds))+"\n"
+    review_accuracy = "Accuracy on review data only: "+str(metrics.accuracy_score(review_golds, review_preds))  +"\n"
+    conf_matrix_twitter = np.array2string(metrics.confusion_matrix(twitter_golds,twitter_preds,labels=["0","1","2"]))
+    confusion_twitter = "Confusion matrix of twitter data: \n"+str(conf_matrix_twitter)+"\n"
+    plt.clf()
+    ConfusionMatrixDisplay.from_predictions(twitter_golds,twitter_preds)
+    plt.title(str("Confusion Matrix Twitter data"))
+    if path_to_save_evaluation_to:
+        plt.savefig(str(path_to_save_evaluation_to+"_confusionMatrix_twitter.jpg")) 
+    plt.close()
+    conf_matrix_review = np.array2string(metrics.confusion_matrix(review_golds,review_preds,labels=["0","1","2"]))
+    confusion_review = "Confusion matrix of review data: \n"+str(conf_matrix_review)+"\n"
+    plt.clf()
+    ConfusionMatrixDisplay.from_predictions(review_golds,review_preds)
+    plt.title(str("Confusion Matrix Review data"))
+    if path_to_save_evaluation_to:
+        plt.savefig(str(path_to_save_evaluation_to+"_confusionMatrix_review.jpg")) 
+    plt.close()
+
+    # analyze the model performance with the built-in classification_report function
+    report = "Built-in analysis: \n"+str(metrics.classification_report(y_true=golds,y_pred=preds))+"\n"
+
+    if printing:
+        print(accuracy)
+        print(f_score)
+        print(confidence)
+        print(confusion)
+        print(report)
+        print("\nLet's look at differences between 'genres':")
+        print(twitter_accuracy)
+        print(review_accuracy)
+        print(confusion_twitter)
+        print(confusion_review)
+    
+    if path_to_save_evaluation_to:
+        analysis_report = open(str(path_to_save_evaluation_to+".txt"),"w")
+        analysis_report.write(accuracy)
+        analysis_report.write(f_score)
+        analysis_report.write(confidence)
+        analysis_report.write(confusion)
+        analysis_report.write(report)
+        analysis_report.write("\nLet's look at differences between 'genres':\n")
+        analysis_report.write(twitter_accuracy)
+        analysis_report.write(review_accuracy)
+        analysis_report.write(confusion_twitter)
+        analysis_report.write(confusion_review)
+        analysis_report.close()
+
+
+def order_samples_for_qualitative_analysis(predictions, translations, path_to_file):
+    """Displays predictions in a more human-readable way
+
+    Args:
+        predictions (list): List of items, where each item has an id, text, predicted label, gold label, probability distribution over prediction
+        translations (dict): key = text in source language, value = text in translated target language
+        path_to_file (str): Reordering is saved to the file specified via this path
+    """
+    # order
+    situations = [[[],[],[]],[[],[],[]],[[],[],[]]] # outer index represents gold, inner index prediction
+    for pred in predictions:
+        pred["translated"] = translations[pred["text"]]
+        outer_ind = int(pred["gold"])
+        inner_ind = int(pred["pred"])
+        situations[outer_ind][inner_ind] += [pred]
+    # save to file
+    situations_dict = {"gold: neg":{"pred: neg":situations[0][0],
+                                    "pred: neut":situations[0][1],
+                                    "pred: pos":situations[0][2]},
+                       "gold: neut":{"pred: neg":situations[1][0],
+                                    "pred: neut":situations[1][1],
+                                    "pred: pos":situations[1][2]},
+                        "gold: pos":{"pred: neg":situations[2][0],
+                                    "pred: neut":situations[2][1],
+                                    "pred: pos":situations[2][2]}}
+    with open(path_to_file,"w") as file:
+        json.dump(situations_dict,file,indent=3)
+
+
 # -----------------------------------------------------------------
 
-# evaluate model performance and save predictions to file
-validateAndTest(model,dev_dataloader,test_dataloader,loss_function,test_data,prediction_path,device)
+# # evaluate model performance and save predictions to file
+# validateAndTest(model,dev_dataloader,test_dataloader,loss_function,test_data,prediction_path,device)
 
 # # analyze predictions
 # with open(prediction_path, 'rb') as file:
 #     predictions = pickle.load(file)
+# # analyze_quantitatively(predictions,dataset,True,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/model0")
+# with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translations.pkl', 'rb') as file:
+#     translations = pickle.load(file)
+# order_samples_for_qualitative_analysis(predictions,translations,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/model0_qualitative.json")
