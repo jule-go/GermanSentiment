@@ -30,10 +30,11 @@ class Classifier(nn.Module):
         self.roberta_model = self.roberta_model.to(device)
 
         # integrate adapter model
-        self.self_pretrained_adapter_name = "xlm-roberta-base_adapter"
-        adapters.init(self.roberta_model)
-        self.roberta_model.add_adapter(self.self_pretrained_adapter_name,config=adapter_config)
-        self.roberta_model.train_adapter(self.self_pretrained_adapter_name)
+        if adapter_config != "none":
+            self.self_pretrained_adapter_name = "xlm-roberta-base_adapter"
+            adapters.init(self.roberta_model)
+            self.roberta_model.add_adapter(self.self_pretrained_adapter_name,config=adapter_config)
+            self.roberta_model.train_adapter(self.self_pretrained_adapter_name)
 
         # define simple classification network
         self.class_layer1 = torch.nn.Linear(768,layer_size) # iput is roberta output of size 768, output is layer_size
