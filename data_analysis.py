@@ -106,6 +106,5 @@ train_data = data_loading.load_own_dataset(dataset,train_ids,None)
 dev_data = data_loading.load_own_dataset(dataset,dev_ids,None)
 test_data = data_loading.load_own_dataset(dataset,test_ids,None)
 
-
-# call the analysis from outside like this
-#analyze_dataset([train_data,dev_data,test_data],True,"/mount/studenten-temp1/users/godberja/GermanSentiment/analysis/data.txt")
+# call the actual analysis
+analyze_dataset([train_data,dev_data,test_data],True,"/mount/studenten-temp1/users/godberja/GermanSentiment/analysis/data.txt")
