@@ -26,11 +26,13 @@ def own_collate(batch) -> dict:
     texts = []
     labels = []
     ids = []
+    sources = []
     for datapoint in batch:
         texts += [datapoint["text"]]
         labels += [datapoint["label"]]
         ids += [datapoint["id"]]
-    return {"texts":texts,"labels":labels,"ids":ids}
+        sources += [datapoint["source"]]
+    return {"texts":texts,"labels":labels,"ids":ids,"sources":sources}
 
 
 def load_dataloader(dataset,batch_size) -> DataLoader:
@@ -61,11 +63,13 @@ class SentimentAnalysisData(Dataset):
         self.texts = [] 
         self.labels = [] 
         self.ids = []
+        self.sources = []
 
         for data_id in data_ids:   
             self.ids += [data_id]
             current_instance = data["train"][data_id]
             self.labels += [current_instance["label"]]
+            self.sources += [current_instance["original_dataset"]]
             if translations:
                 self.texts += [translations[data_id]]
             else:
@@ -90,4 +94,5 @@ class SentimentAnalysisData(Dataset):
         text = self.texts[index]
         label = self.labels[index]
         id = self.ids[index]
-        return {"text":text,"label":label,"id":id}
+        source = self.sources[index]
+        return {"text":text,"label":label,"id":id,"source":source}
