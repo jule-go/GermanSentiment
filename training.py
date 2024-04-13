@@ -21,12 +21,15 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # specify location of train/validation data
-with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/indices.pkl', 'rb') as file:
-    indices = pickle.load(file)
-train_ids = indices["german"]["train"][:1000] # TODO remove splitting
-train_identifier = "german_train"
-dev_ids = indices["german"]["dev"][:200] # TODO remove splitting
-dev_identifier = "german_dev"
+with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
+    ids = pickle.load(file)
+    
+train_ids = ids["de_train_small"]
+print("Use ",len(train_ids)," datasamples for training")
+train_identifier = "german_train_small"
+dev_ids = ids["de_dev_small"]
+print("Use ",len(dev_ids)," datasamples for evaluation")
+dev_identifier = "german_dev_small"
 
 # specify whether we need to look up translations
 translation_train = None
@@ -58,7 +61,7 @@ print("Model is loaded")
 
 # set some hyperparams for training 
 num_epochs = 10 # 40, 3, 20, 100
-batch_size = 16  # maybe try 32, 16, 64
+batch_size = 8  # maybe try 32, 16, 64
 learning_rate = 1e-3 # maybe try 1e-4 # 5e-4
 loss_function = nn.MSELoss() # nn.L1Loss() # nn.MSELoss() # nn.CrossEntropyLoss()
 optimizer = torch.optim.AdamW(model.parameters(),lr=learning_rate) # AdamW, SGD, Adam, RMSProp

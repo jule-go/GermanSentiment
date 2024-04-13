@@ -10,6 +10,9 @@ from model_definition import Classifier
 import numpy as np
 from datasets import load_dataset
 from sklearn import metrics
+from sklearn.metrics import ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # -----------------------------------------------------------------------------------------
@@ -20,12 +23,12 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # specify location of train/validation data
-with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/indices.pkl', 'rb') as file:
-    indices = pickle.load(file)
-dev_ids = indices["german"]["dev"][:200]
-test_ids = indices["german"]["test"][:100]
+with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
+    ids = pickle.load(file)
+dev_ids = ids["de_dev_small"]
+test_ids = ids["de_test"]
 
-test_identifier = "german_test" # e.g. indicate whether test data got translated
+test_identifier = "german_test" # e.g. indicate for myself whether test data got translated
 
 # specify whether we need to look up translations
 translation_dev = None
@@ -151,13 +154,15 @@ def make_predictions(test_dataset,model,path_to_save_prediction_to):
         for datapoint in test_dataset:
             prediction = dict()
 
+            id = datapoint["id"]
             text = datapoint["text"] 
             gold_label = datapoint["label"] 
             gold_tensor = torch.stack(tuple([torch.nn.functional.one_hot(torch.tensor(int(gold_label)),num_classes=3)]))
             gold_tensor = gold_tensor.type(torch.float32)
             gold_tensor = gold_tensor.to(device)
+            prediction["id"] = id
             prediction["text"] = text
-            prediction["gold"] = gold_label
+            prediction["gold"] = str(gold_label)
 
             loss,model_pred = model([text],gold_tensor,loss_fn)
             model_pred_prob = torch.softmax(model_pred,dim=1)
@@ -194,5 +199,9 @@ def validateAndTest(model,dev_dataloader,test_dataloader,loss_function,test_data
 
 # -----------------------------------------------------------------
 
-# for comparison if loading saved model works evaluate on validation data; but mainly(!) evaluate on test data
+# evaluate model performance and save predictions to file
 validateAndTest(model,dev_dataloader,test_dataloader,loss_function,test_data,prediction_path,device)
+
+# # analyze predictions
+# with open(prediction_path, 'rb') as file:
+#     predictions = pickle.load(file)
