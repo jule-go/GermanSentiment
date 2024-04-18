@@ -44,14 +44,15 @@ path_to_saved_model = "/mount/studenten-temp1/users/godberja/GermanSentiment/mod
 prediction_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/predictions_" +test_identifier+"_" + str(training_id) + ".pkl" 
 
 # adapter configuration that should be loaded
-adapter_config = "lora"
+pretrained_model_config = "roberta-base" # TODO
+adapter_config = "lora" # TODO
 
 # specify "size" of classification network and activation function
 classification_layer_size = 100 # 75, 15, 100, 65, 120
 activation = nn.ReLU()
 
 # load model
-model = Classifier(adapter_config=adapter_config,layer_size=classification_layer_size,activation=activation,device=device) 
+model = Classifier(adapter_config=adapter_config,layer_size=classification_layer_size,activation=activation,device=device,pretrained_model=pretrained_model_config) 
 model = model.to(device) 
 model.load_state_dict(torch.load(path_to_saved_model))
 model.eval()
@@ -107,7 +108,7 @@ def test(model, test_data, loss_function, device):
     gold_labels_all = []
 
     for batch in test_data:
-        svo_triplets = batch["texts"]
+        texts = batch["texts"]
 
         labels = torch.stack(tuple([torch.nn.functional.one_hot(torch.tensor(int(label_test)),3) for label_test in batch["labels"]])) # stacked tensor of labels (one-hot encoded)
         labels = labels.type(torch.float32)
@@ -117,7 +118,8 @@ def test(model, test_data, loss_function, device):
         for label in gold_list:
             gold_labels_all.append(label)
 
-        loss,output = model(svo_triplets,labels,loss_function)
+        output = model(texts)
+        loss = loss_function(output, labels)
 
         losses += loss.item()
         pred_probs = torch.softmax(output,dim=1) # apply softmax in case a model does not have softmax as final layer
@@ -128,7 +130,7 @@ def test(model, test_data, loss_function, device):
 
         correct = torch.sum(torch.eq(pred_labels,gold_labels))
         corrects += correct.item()
-        total += len(svo_triplets)
+        total += len(texts)
 
     avg_acc = corrects / total 
     f_score = metrics.f1_score(gold_labels_all, pred_labels_all,average="weighted")
@@ -166,7 +168,7 @@ def make_predictions(test_dataset,model,path_to_save_prediction_to):
             prediction["text"] = text
             prediction["gold"] = str(gold_label)
 
-            loss,model_pred = model([text],gold_tensor,loss_fn)
+            model_pred = model([text])
             model_pred_prob = torch.softmax(model_pred,dim=1)
             model_pred_label = torch.argmax(model_pred_prob,dim=1)
             prediction["pred"] = str(model_pred_label.item())

@@ -24,12 +24,12 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
     ids = pickle.load(file)
     
-train_ids = ids["de_train_small"]
+train_ids = ids["en_train_large"]
 print("Use ",len(train_ids)," datasamples for training")
-train_identifier = "german_train_small"
-dev_ids = ids["de_dev_small"]
+train_identifier = "english_train_large"
+dev_ids = ids["en_dev_large"]
 print("Use ",len(dev_ids)," datasamples for evaluation")
-dev_identifier = "german_dev_small"
+dev_identifier = "english_dev_large"
 
 # specify whether we need to look up translations
 translation_train = None
@@ -39,35 +39,36 @@ translation_dev = None
 acc_bool = True #False
 
 # specify where to save the model later
-training_id = 0 # only used for us for logging the different hyperparameter effects
+training_id = 113 # only used for us for logging the different hyperparameter effects # TODO
 saving_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/models/model_" + str(training_id) + ".pt"
 
 # specify where you want to keep track of hyperparameter tuning
 logging_file = "/mount/studenten-temp1/users/godberja/GermanSentiment/training_logging.md"
 
-# adapter configuration that should be loaded
-adapter_config = "lora"
+# configuration that should be loaded
+pretrained_model_config = "roberta-base"#"xlm-roberta-base"
+adapter_config = "none" # note the adapter  TODO
 
 # specify "size" of classification network
-classification_layer_size = 100 # 75, 15, 100, 65, 120
+classification_layer_size = 50 # 50, 100, 200 # TODO 100
 
 # decide for activation function
-activation = nn.ReLU()
+activation = nn.Tanh()#nn.ReLU() # nn.Tanh(), nn.ReLU() # TODO
 
 # load model
-model = Classifier(adapter_config=adapter_config,layer_size=classification_layer_size,activation=activation,device=device) 
+model = Classifier(adapter_config=adapter_config,layer_size=classification_layer_size,activation=activation,device=device,pretrained_model=pretrained_model_config) 
 model = model.to(device) 
 print("Model is loaded")
 
 # set some hyperparams for training 
-num_epochs = 10 # 40, 3, 20, 100
-batch_size = 8  # maybe try 32, 16, 64
-learning_rate = 1e-3 # maybe try 1e-4 # 5e-4
-loss_function = nn.MSELoss() # nn.L1Loss() # nn.MSELoss() # nn.CrossEntropyLoss()
-optimizer = torch.optim.AdamW(model.parameters(),lr=learning_rate) # AdamW, SGD, Adam, RMSProp
+num_epochs = 10 # 5, 10, 50 # TODO
+batch_size = 8# 8, 16  # only use this small size, as I run into errors with GPU when using larger sizes
+learning_rate = 0.001 # 0.005, 0.01, 0.001 # TODO
+loss_function = nn.MSELoss() # nn.CrossEntropyLoss(), nn.MSELoss() # TODO
+optimizer = torch.optim.AdamW(model.parameters(),lr=learning_rate) # AdamW, SGD # TODO
 
 # specify random seed
-seed = 99  #24, 99
+seed = 99  #24 # TODO
 
 # -----------------------------------------------------------------------------------------
 # [don't change things in this section]
@@ -114,7 +115,7 @@ def train_epoch(model,train_data,optimizer,loss_function,device):
     gold_labels_all = []
     for batch in train_data:
         optimizer.zero_grad()
-        svo_triplets = batch["texts"]
+        texts = batch["texts"]
 
         labels = torch.stack(tuple([torch.nn.functional.one_hot(torch.tensor(int(label_val)),3) for label_val in batch["labels"]])) # stacked tensor of labels (one-hot encoded)
         labels = labels.type(torch.float32)
@@ -124,7 +125,9 @@ def train_epoch(model,train_data,optimizer,loss_function,device):
         for label in gold_list:
             gold_labels_all.append(label)
 
-        loss,output = model(svo_triplets,labels,loss_function)
+        # loss,output = model(texts,labels,loss_function) # TODO
+        output = model(texts)
+        loss = loss_function(output, labels)
 
         losses += loss.item()
         loss.backward()
@@ -136,7 +139,7 @@ def train_epoch(model,train_data,optimizer,loss_function,device):
 
         correct = torch.sum(torch.eq(pred_labels,gold_labels))
         corrects += correct.item()
-        total += len(svo_triplets)
+        total += len(texts)
 
         optimizer.step()
 
@@ -164,7 +167,7 @@ def validate_epoch(model,val_data,loss_function,device):
     pred_labels_all = []
     gold_labels_all = []
     for batch in val_data:
-        svo_triplets = batch["texts"]
+        texts = batch["texts"]
 
         labels = torch.stack(tuple([torch.nn.functional.one_hot(torch.tensor(int(label_val)),3) for label_val in batch["labels"]])) # stacked tensor of labels (one-hot encoded)
         labels = labels.type(torch.float32)
@@ -174,7 +177,9 @@ def validate_epoch(model,val_data,loss_function,device):
         for label in gold_list:
             gold_labels_all.append(label)
 
-        loss,output = model(svo_triplets,labels,loss_function)
+        # loss,output = model(texts,labels,loss_function) TODO
+        output = model(texts)
+        loss = loss_function(output, labels)
 
         losses += loss.item()
         pred_probs = torch.softmax(output,dim=1) # apply softmax in case a model does not have softmax as final layer
@@ -185,7 +190,7 @@ def validate_epoch(model,val_data,loss_function,device):
 
         correct = torch.sum(torch.eq(pred_labels,gold_labels))
         corrects += correct.item()
-        total += len(svo_triplets)
+        total += len(texts)
 
     avg_acc = corrects / total 
     f_score = avg_acc = metrics.f1_score(gold_labels_all, pred_labels_all,average="weighted")
