@@ -1,6 +1,8 @@
 # don't upload trained model checkpoints
 models/alt/
 *.pt
+# don't upload predictions where text and gold label is included
+hidden/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
