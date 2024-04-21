@@ -2,6 +2,8 @@
 This project is done as part of the course Corpora in Speech and Language Processing in Trinity College Dublin.
 It considers the task of sentiment analysis for German. I investigate whether using a Machine Translation system is beneficial for dealing with sentiment in a low-resource scenario.
 
+For more details and insights on the results, please read through the submitted report.
+
 In case of questions: Don't hesitate to email me!   [Jule Godbersen](mailto:godbersj@tcd.ie)
 
 ## Installation and Running
