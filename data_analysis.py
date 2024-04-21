@@ -90,21 +90,22 @@ def analyze_dataset(dataset,printing=False,path_for_report=None):
         analysis_report.write(sources)
         analysis_report.close()
 
+repository_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/"# TODO adapt path
 
 # load data and analyze it
-with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
+with open(repository_path+'data/ids.pkl', 'rb') as file:
     ids = pickle.load(file)
 train_ids = ids["en_train_large"]#+ids["de_train_small"]
 dev_ids = ids["en_dev_large"]#+ids["de_dev_small"]
 test_ids = ids["de_test"] 
 
-# with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translations.pkl', 'rb') as file:
+# with open(repository_path+'data/translations.pkl', 'rb') as file:
 #     translations = pickle.load(file)
 
-dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache")
+dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache") # TODO adapth path
 train_data = data_loading.load_own_dataset(dataset,train_ids,None)
 dev_data = data_loading.load_own_dataset(dataset,dev_ids,None)
 test_data = data_loading.load_own_dataset(dataset,test_ids,None)
 
 # call the actual analysis
-analyze_dataset([train_data,dev_data,test_data],True,"/mount/studenten-temp1/users/godberja/GermanSentiment/analysis/english_large_analysis.txt")
+analyze_dataset([train_data,dev_data,test_data],True,repository_path+"analysis/english_large_analysis.txt") # TODO adapt file name accordingly

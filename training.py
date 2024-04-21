@@ -16,12 +16,14 @@ import matplotlib.pyplot as plt
 # -----------------------------------------------------------------------------------------
 # [in this section one should change the values!]
 
+repository_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/" # TODO adapt path
+
 # specify on which GPU you want to run the model
 os.environ["CUDA_VISIBLE_DEVICES"] = "4" 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # specify location of train/validation data
-with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
+with open(repository_path+'data/ids.pkl', 'rb') as file:
     ids = pickle.load(file)
     
 train_ids = ids["de_train_large"]#ids["de_train_small"], "en_train_large"
@@ -35,7 +37,7 @@ print("Use ",len(dev_ids)," datasamples for evaluation")
 dev_identifier = "german_dev_large"#"german_dev_large"
 
 # load translations
-with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translations.pkl', 'rb') as file:
+with open(repository_path+'data/translations.pkl', 'rb') as file:
     translations = pickle.load(file)
 
 # specify whether we need to look up translations
@@ -47,10 +49,10 @@ acc_bool = True # False, True
 
 # specify where to save the model later
 training_id = 7 # only used for us for logging the different hyperparameter effects # TODO
-saving_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/training/model_" + str(training_id) + ".pt"
+saving_path = repository_path+"training/model_" + str(training_id) + ".pt"
 
 # specify where you want to keep track of hyperparameter tuning
-logging_file = "/mount/studenten-temp1/users/godberja/GermanSentiment/training_logging.md"
+logging_file = repository_path+"training_logging.md"
 
 # configuration that should be loaded
 pretrained_model_config = "roberta-base" # "xlm-roberta-base"
@@ -80,8 +82,8 @@ seed = 24 #24, 99# TODO
 # -----------------------------------------------------------------------------------------
 # [don't change things in this section]
 
-os.environ["HF_DATASETS_CACHE"] = "/mount/studenten-temp1/users/godberja/HuggingfaceCache" # TODO needed?
-os.environ["TRANSFORMERS_CACHE"] = "/mount/studenten-temp1/users/godberja/Cache" # TODO needed?
+os.environ["HF_DATASETS_CACHE"] = "/mount/studenten-temp1/users/godberja/HuggingfaceCache" # TODO adapt path
+os.environ["TRANSFORMERS_CACHE"] = "/mount/studenten-temp1/users/godberja/Cache" # TODO adapt path
 
 print("Number of total params: ", sum(p.numel() for p in model.parameters()))
 print("Number of trainable params: ", sum(p.numel() for p in model.parameters() if p.requires_grad))
@@ -93,7 +95,7 @@ torch.manual_seed(seed)
 torch.cuda.manual_seed(seed)
 
 # load the data
-dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache")
+dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache") # TODO adapth path
 train_data = data_loading.load_own_dataset(dataset,train_ids,translation_train)
 # train_data2 = data_loading.load_own_dataset(dataset,train_ids2,translations)
 # train_data = torch.utils.data.ConcatDataset([train_data1, train_data2])
@@ -136,7 +138,6 @@ def train_epoch(model,train_data,optimizer,loss_function,device):
         for label in gold_list:
             gold_labels_all.append(label)
 
-        # loss,output = model(texts,labels,loss_function) # TODO
         output = model(texts)
         loss = loss_function(output, labels)
 
@@ -188,7 +189,6 @@ def validate_epoch(model,val_data,loss_function,device):
         for label in gold_list:
             gold_labels_all.append(label)
 
-        # loss,output = model(texts,labels,loss_function) TODO
         output = model(texts)
         loss = loss_function(output, labels)
 

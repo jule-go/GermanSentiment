@@ -20,14 +20,16 @@ from germansentiment import SentimentModel
 # -----------------------------------------------------------------------------------------
 # [in this section one should change the values!]
 
+repository_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/" # TODO adapt path
+
 # specify location of train/validation data
-with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
+with open(repository_path+'data/ids.pkl', 'rb') as file:
     ids = pickle.load(file)
 dev_ids = ids["de_dev_small"]
 test_ids = ids["de_test"]
 
 # load translations
-with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translations.pkl', 'rb') as file:
+with open(repository_path+'data/translations.pkl', 'rb') as file:
     translations = pickle.load(file)
 
 # specify whether we need to look up translations
@@ -37,7 +39,7 @@ test_identifier = "german_test" # e.g. indicate for myself whether test data got
 
 
 # specify where to save predictions to
-prediction_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/predictions_" +test_identifier+"_baseline.pkl" 
+prediction_path = repository_path + "evaluation/predictions_" +test_identifier+"_baseline.pkl" 
 
 # load model
 model = SentimentModel()
@@ -53,11 +55,11 @@ loss_function = nn.CrossEntropyLoss() # nn.L1Loss() # nn.MSELoss() # nn.CrossEnt
 
 device = torch.device("cpu")
 
-os.environ["HF_DATASETS_CACHE"] = "/mount/studenten-temp1/users/godberja/HuggingfaceCache" # TODO needed?
-os.environ["TRANSFORMERS_CACHE"] = "/mount/studenten-temp1/users/godberja/Cache" # TODO needed?
+os.environ["HF_DATASETS_CACHE"] = "/mount/studenten-temp1/users/godberja/HuggingfaceCache" # TODO adapt path
+os.environ["TRANSFORMERS_CACHE"] = "/mount/studenten-temp1/users/godberja/Cache" # TODO adapt path
 
 # load the data
-dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache")
+dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache") # TODO adapth path
 dev_data = data_loading.load_own_dataset(dataset,dev_ids,translation_dev)
 dev_dataloader = data_loading.load_dataloader(dev_data,batch_size)
 print("Development data is loaded")
@@ -342,5 +344,5 @@ validateAndTest(model,dev_dataloader,test_dataloader,loss_function,test_data,pre
 # analyze predictions
 with open(prediction_path, 'rb') as file:
     predictions = pickle.load(file)
-analyze_quantitatively(predictions,dataset,True,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/baseline_model")
-order_samples_for_qualitative_analysis(predictions,translations,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/baseline_model_qualitative.json")
+analyze_quantitatively(predictions,dataset,True,repository_path+"evaluation/baseline_model")
+order_samples_for_qualitative_analysis(predictions,translations,repository_path+"evaluation/baseline_model_qualitative.json")
