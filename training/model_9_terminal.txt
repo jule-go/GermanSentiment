@@ -1,0 +1,337 @@
+(.cslp_proj_env) (.cslp_proj_env) godberja@strauss:/mount/studenten-temp1/users/godberja$ /mount/studenten-temp1/users/godberja/.cslp_proj_env/bin/python /mount/studenten-temp1/users/godberja/GermanSentiment/training.py
+/mount/studenten-temp1/users/godberja/.cslp_proj_env/lib64/python3.8/site-packages/transformers/utils/generic.py:441: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
+  _torch_pytree._register_pytree_node(
+/mount/studenten-temp1/users/godberja/.cslp_proj_env/lib64/python3.8/site-packages/transformers/utils/generic.py:309: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
+  _torch_pytree._register_pytree_node(
+/mount/studenten-temp1/users/godberja/.cslp_proj_env/lib64/python3.8/site-packages/transformers/utils/generic.py:309: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
+  _torch_pytree._register_pytree_node(
+/mount/studenten-temp1/users/godberja/.cslp_proj_env/lib64/python3.8/site-packages/transformers/deepspeed.py:23: FutureWarning: transformers.deepspeed module is deprecated and will be removed in a future version. Please import deepspeed modules directly from transformers.integrations
+  warnings.warn(
+/mount/studenten-temp1/users/godberja/.cslp_proj_env/lib64/python3.8/site-packages/transformers/utils/generic.py:309: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
+  _torch_pytree._register_pytree_node(
+Use  6600  datasamples for training
+Use  2820  datasamples for evaluation
+Some weights of RobertaModel were not initialized from the model checkpoint at roberta-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Model is loaded
+Number of total params:  124684235
+Number of trainable params:  38603
+Training is running on device:  cuda:0
+Training data is loaded
+Development data is loaded
+start training
+Epoch  1
+        train:   1.106046303383355  (loss)       0.3449635922330097  (acc)       0.34385529906417167  (F1-Score)
+        validate:        0.014653545419375101  (loss)    0.16677025329863213  (acc)      0.16677025329863213  (F1-Score)
+        Saved the model with accuracy:  0.16677025329863213
+Epoch  2
+        train:   1.1012785509952063  (loss)      0.3305521844660194  (acc)       0.3296810309200871  (F1-Score)
+        validate:        0.014678860451235915  (loss)    0.17635370751270169  (acc)      0.17635370751270169  (F1-Score)
+        Saved the model with accuracy:  0.17635370751270169
+Epoch  3
+        train:   1.0996494327934043  (loss)      0.3548240291262136  (acc)       0.35406734970939313  (F1-Score)
+        validate:        0.014635838270187378  (loss)    0.1675241488870064  (acc)       0.1675241488870064  (F1-Score)
+Epoch  4
+        train:   1.099158767936299  (loss)       0.3460254854368932  (acc)       0.34501804496889577  (F1-Score)
+        validate:        0.014674475156899654  (loss)    0.16645956434348816  (acc)      0.16645956434348816  (F1-Score)
+Epoch  5
+        train:   1.0972693730326533  (loss)      0.35194174757281554  (acc)      0.3462761609813582  (F1-Score)
+        validate:        0.014664475141149578  (loss)    0.23629207370930344  (acc)      0.23629207370930344  (F1-Score)
+        Saved the model with accuracy:  0.23629207370930344
+Epoch  6
+        train:   1.0976370468880365  (loss)      0.3452669902912621  (acc)       0.3428748423908005  (F1-Score)
+        validate:        0.014592038158214454  (loss)    0.2828274664097357  (acc)       0.2828274664097357  (F1-Score)
+        Saved the model with accuracy:  0.2828274664097357
+Epoch  7
+        train:   1.096402983063633  (loss)       0.35452063106796117  (acc)      0.34827557885423166  (F1-Score)
+        validate:        0.014589130517208214  (loss)    0.2825352892016693  (acc)       0.2825352892016693  (F1-Score)
+Epoch  8
+        train:   1.0962385847730545  (loss)      0.35436893203883496  (acc)      0.35398791272744085  (F1-Score)
+        validate:        0.01457579544096282  (loss)     0.2822405646339235  (acc)       0.2822405646339235  (F1-Score)
+Epoch  9
+        train:   1.0918695481078138  (loss)      0.3730279126213592  (acc)       0.36917491770602395  (F1-Score)
+        validate:        0.014540136095249291  (loss)    0.346952439431765  (acc)        0.346952439431765  (F1-Score)
+        Saved the model with accuracy:  0.346952439431765
+Epoch  10
+        train:   1.0946425737686527  (loss)      0.3648361650485437  (acc)       0.36358599760693344  (F1-Score)
+        validate:        0.014529173301927972  (loss)    0.2893984280482329  (acc)       0.2893984280482329  (F1-Score)
+Epoch  11
+        train:   1.0938718689298166  (loss)      0.372876213592233  (acc)        0.366230023097877  (F1-Score)
+        validate:        0.014539772832032406  (loss)    0.38450948638093013  (acc)      0.38450948638093013  (F1-Score)
+        Saved the model with accuracy:  0.38450948638093013
+Epoch  12
+        train:   1.093188045673  (loss)  0.3762135922330097  (acc)       0.3739014697360209  (F1-Score)
+        validate:        0.014518061262188535  (loss)    0.2835673293789834  (acc)       0.2835673293789834  (F1-Score)
+Epoch  13
+        train:   1.0926033675091937  (loss)      0.37226941747572817  (acc)      0.366862084335314  (F1-Score)
+        validate:        0.014505062807690013  (loss)    0.2841000737885989  (acc)       0.2841000737885989  (F1-Score)
+Epoch  14
+        train:   1.0920918491280194  (loss)      0.3702973300970874  (acc)       0.36563042661068296  (F1-Score)
+        validate:        0.014472142692768213  (loss)    0.37052335177611195  (acc)      0.37052335177611195  (F1-Score)
+Epoch  15
+        train:   1.0888592016349719  (loss)      0.3748483009708738  (acc)       0.36810986407767665  (F1-Score)
+        validate:        0.014534583037549799  (loss)    0.19380046978261517  (acc)      0.19380046978261517  (F1-Score)
+Epoch  16
+        train:   1.0877879325625965  (loss)      0.38531553398058255  (acc)      0.38101255000541606  (F1-Score)
+        validate:        0.014642080068588257  (loss)    0.25553957845138586  (acc)      0.25553957845138586  (F1-Score)
+Epoch  17
+        train:   1.0895969219578123  (loss)      0.3772754854368932  (acc)       0.37445349702447034  (F1-Score)
+        validate:        0.01445816908821915  (loss)     0.31943953247158935  (acc)      0.31943953247158935  (F1-Score)
+Epoch  18
+        train:   1.0883092417300326  (loss)      0.38577063106796117  (acc)      0.3805098971258341  (F1-Score)
+        validate:        0.014451309424458127  (loss)    0.297026970995543  (acc)        0.297026970995543  (F1-Score)
+Epoch  19
+        train:   1.0816863734745286  (loss)      0.39350728155339804  (acc)      0.38501915956907545  (F1-Score)
+        validate:        0.014368311654437672  (loss)    0.3705324030738401  (acc)       0.3705324030738401  (F1-Score)
+Epoch  20
+        train:   1.0824558659664636  (loss)      0.38774271844660196  (acc)      0.3846874828233198  (F1-Score)
+        validate:        0.014325777364499642  (loss)    0.36347103892554244  (acc)      0.36347103892554244  (F1-Score)
+Epoch  21
+        train:   1.0848678304153738  (loss)      0.3875910194174757  (acc)       0.37867333750519494  (F1-Score)
+        validate:        0.014629539106831405  (loss)    0.25592703247656917  (acc)      0.25592703247656917  (F1-Score)
+Epoch  22
+        train:   1.0834685436730247  (loss)      0.3907766990291262  (acc)       0.38605560227372904  (F1-Score)
+        validate:        0.014452426180695043  (loss)    0.3010243695767783  (acc)       0.3010243695767783  (F1-Score)
+Epoch  23
+        train:   1.080725096961827  (loss)       0.40124393203883496  (acc)      0.3956697412228589  (F1-Score)
+        validate:        0.014327461538892803  (loss)    0.3568026395725244  (acc)       0.3568026395725244  (F1-Score)
+Epoch  24
+        train:   1.08041962778684  (loss)        0.40139563106796117  (acc)      0.3965954622587534  (F1-Score)
+        validate:        0.014269162217775981  (loss)    0.4097986575743604  (acc)       0.4097986575743604  (F1-Score)
+        Saved the model with accuracy:  0.4097986575743604
+Epoch  25
+        train:   1.077713510365162  (loss)       0.40003033980582525  (acc)      0.3960741234425776  (F1-Score)
+        validate:        0.014226955771446228  (loss)    0.39619573028316923  (acc)      0.39619573028316923  (F1-Score)
+Epoch  26
+        train:   1.0757660318925544  (loss)      0.39942354368932037  (acc)      0.3945561931706279  (F1-Score)
+        validate:        0.014280970683603575  (loss)    0.3456737230415679  (acc)       0.3456737230415679  (F1-Score)
+Epoch  27
+        train:   1.0766292790186058  (loss)      0.4027609223300971  (acc)       0.4005478920309107  (F1-Score)
+        validate:        0.014484369492892063  (loss)    0.2951449757003698  (acc)       0.2951449757003698  (F1-Score)
+Epoch  28
+        train:   1.0771565755594124  (loss)      0.40139563106796117  (acc)      0.3972723554660565  (F1-Score)
+        validate:        0.014192865183859161  (loss)    0.3932531805325708  (acc)       0.3932531805325708  (F1-Score)
+Epoch  29
+        train:   1.0752112202852675  (loss)      0.41019417475728154  (acc)      0.4057048655390503  (F1-Score)
+        validate:        0.014278862133170618  (loss)    0.3310014702674621  (acc)       0.3310014702674621  (F1-Score)
+Epoch  30
+        train:   1.0759972362842374  (loss)      0.4068567961165049  (acc)       0.4044433490634163  (F1-Score)
+        validate:        0.014532432303284154  (loss)    0.2900961665113862  (acc)       0.2900961665113862  (F1-Score)
+Epoch  31
+        train:   1.073737973437726  (loss)       0.4073118932038835  (acc)       0.40096183996233614  (F1-Score)
+        validate:        0.014196328827829072  (loss)    0.4227970445706679  (acc)       0.4227970445706679  (F1-Score)
+        Saved the model with accuracy:  0.4227970445706679
+Epoch  32
+        train:   1.0697569248167056  (loss)      0.41368325242718446  (acc)      0.410170090033198  (F1-Score)
+        validate:        0.014186526636282603  (loss)    0.3639565187589001  (acc)       0.3639565187589001  (F1-Score)
+Epoch  33
+        train:   1.0673823452111586  (loss)      0.4238470873786408  (acc)       0.4204900358841209  (F1-Score)
+        validate:        0.014101454118887583  (loss)    0.4377291535811136  (acc)       0.4377291535811136  (F1-Score)
+        Saved the model with accuracy:  0.4377291535811136
+Epoch  34
+        train:   1.0654088822962011  (loss)      0.426122572815534  (acc)        0.4233529314305374  (F1-Score)
+        validate:        0.014093917815974265  (loss)    0.4249086792258394  (acc)       0.4249086792258394  (F1-Score)
+Epoch  35
+        train:   1.068527813964677  (loss)       0.41808252427184467  (acc)      0.4151705550317485  (F1-Score)
+        validate:        0.01413626952604814  (loss)     0.3721585021881662  (acc)       0.3721585021881662  (F1-Score)
+Epoch  36
+        train:   1.0667018792004261  (loss)      0.4188410194174757  (acc)       0.4164086239456622  (F1-Score)
+        validate:        0.014156884000156866  (loss)    0.40324125881552936  (acc)      0.40324125881552936  (F1-Score)
+Epoch  37
+        train:   1.0707719323125857  (loss)      0.41019417475728154  (acc)      0.40775243447318094  (F1-Score)
+        validate:        0.014035225022922863  (loss)    0.4226391505539524  (acc)       0.4226391505539524  (F1-Score)
+Epoch  38
+        train:   1.064710066445823  (loss)       0.42839805825242716  (acc)      0.42564095863083334  (F1-Score)
+        validate:        0.014013319656704411  (loss)    0.44352285766374033  (acc)      0.44352285766374033  (F1-Score)
+        Saved the model with accuracy:  0.44352285766374033
+Epoch  39
+        train:   1.066285865399444  (loss)       0.4205097087378641  (acc)       0.4180189093549166  (F1-Score)
+        validate:        0.014181705460403905  (loss)    0.3612703132067452  (acc)       0.3612703132067452  (F1-Score)
+Epoch  40
+        train:   1.0651197120981308  (loss)      0.42475728155339804  (acc)      0.42074662256147316  (F1-Score)
+        validate:        0.014126403042764375  (loss)    0.4254130230555567  (acc)       0.4254130230555567  (F1-Score)
+Epoch  41
+        train:   1.066110709917198  (loss)       0.4221783980582524  (acc)       0.4176893937003549  (F1-Score)
+        validate:        0.0139721275008086  (loss)      0.43013529447341486  (acc)      0.43013529447341486  (F1-Score)
+Epoch  42
+        train:   1.0667527523434277  (loss)      0.4164138349514563  (acc)       0.41329968537081224  (F1-Score)
+        validate:        0.013942914605140687  (loss)    0.4369101974048057  (acc)       0.4369101974048057  (F1-Score)
+Epoch  43
+        train:   1.0586801506940602  (loss)      0.42900485436893204  (acc)      0.42556808352497993  (F1-Score)
+        validate:        0.013890010425538727  (loss)    0.44546164808513106  (acc)      0.44546164808513106  (F1-Score)
+        Saved the model with accuracy:  0.44546164808513106
+Epoch  44
+        train:   1.0628986442552029  (loss)      0.4265776699029126  (acc)       0.4237938278589272  (F1-Score)
+        validate:        0.014046663948983858  (loss)    0.4122366694377362  (acc)       0.4122366694377362  (F1-Score)
+Epoch  45
+        train:   1.0586246254953366  (loss)      0.4223300970873786  (acc)       0.42014420658801743  (F1-Score)
+        validate:        0.014029763774438337  (loss)    0.3747853683730691  (acc)       0.3747853683730691  (F1-Score)
+Epoch  46
+        train:   1.058789209254737  (loss)       0.4265776699029126  (acc)       0.4230685172532219  (F1-Score)
+        validate:        0.014010972778002421  (loss)    0.38542487201068004  (acc)      0.38542487201068004  (F1-Score)
+Epoch  47
+        train:   1.0631018587686483  (loss)      0.421875  (acc)         0.4191752868894546  (F1-Score)
+        validate:        0.013924501673741775  (loss)    0.43792611791803915  (acc)      0.43792611791803915  (F1-Score)
+Epoch  48
+        train:   1.0630247838867521  (loss)      0.42794296116504854  (acc)      0.42611127098781676  (F1-Score)
+        validate:        0.014026027276660457  (loss)    0.3986575975715072  (acc)       0.3986575975715072  (F1-Score)
+Epoch  49
+        train:   1.0587997349720557  (loss)      0.42824635922330095  (acc)      0.42277667120279583  (F1-Score)
+        validate:        0.013953955390236595  (loss)    0.4319190804028263  (acc)       0.4319190804028263  (F1-Score)
+Epoch  50
+        train:   1.0613670056884728  (loss)      0.42809466019417475  (acc)      0.4258587763284554  (F1-Score)
+        validate:        0.014594083310979786  (loss)    0.3412650567768898  (acc)       0.3412650567768898  (F1-Score)
+Epoch  51
+        train:   1.0598902592381227  (loss)      0.4255157766990291  (acc)       0.42298806459255256  (F1-Score)
+        validate:        0.013898479197964523  (loss)    0.44477826597521253  (acc)      0.44477826597521253  (F1-Score)
+Epoch  52
+        train:   1.063626202854138  (loss)       0.42763956310679613  (acc)      0.42391563781412295  (F1-Score)
+        validate:        0.014024984394059036  (loss)    0.3767836981066511  (acc)       0.3767836981066511  (F1-Score)
+Epoch  53
+        train:   1.0583953229547705  (loss)      0.43097694174757284  (acc)      0.4272371030739274  (F1-Score)
+        validate:        0.014005429482821262  (loss)    0.40845355586347315  (acc)      0.40845355586347315  (F1-Score)
+Epoch  54
+        train:   1.052398103822782  (loss)       0.44129247572815533  (acc)      0.4389649804744348  (F1-Score)
+        validate:        0.01387493268106923  (loss)     0.44517071811451525  (acc)      0.44517071811451525  (F1-Score)
+Epoch  55
+        train:   1.055022070419441  (loss)       0.4422026699029126  (acc)       0.4387567624534441  (F1-Score)
+        validate:        0.014014122016502149  (loss)    0.37599641571842246  (acc)      0.37599641571842246  (F1-Score)
+Epoch  56
+        train:   1.0598628607768457  (loss)      0.43067354368932037  (acc)      0.4279211409161328  (F1-Score)
+        validate:        0.013998715922687992  (loss)    0.3948918207304949  (acc)       0.3948918207304949  (F1-Score)
+Epoch  57
+        train:   1.0573727390141163  (loss)      0.4274878640776699  (acc)       0.42470118093732756  (F1-Score)
+        validate:        0.013889527302799803  (loss)    0.46084199656553154  (acc)      0.46084199656553154  (F1-Score)
+        Saved the model with accuracy:  0.46084199656553154
+Epoch  58
+        train:   1.0581303901464036  (loss)      0.43097694174757284  (acc)      0.4294021871914585  (F1-Score)
+        validate:        0.013893406896880178  (loss)    0.4471524066306863  (acc)       0.4471524066306863  (F1-Score)
+Epoch  59
+        train:   1.0534106571118809  (loss)      0.4365898058252427  (acc)       0.4328448836390857  (F1-Score)
+        validate:        0.013895928272695252  (loss)    0.41575261719316375  (acc)      0.41575261719316375  (F1-Score)
+Epoch  60
+        train:   1.0540842931826138  (loss)      0.4400788834951456  (acc)       0.43580160966444625  (F1-Score)
+        validate:        0.013850863955237649  (loss)    0.4398010930505155  (acc)       0.4398010930505155  (F1-Score)
+Epoch  61
+        train:   1.0533178315579312  (loss)      0.4429611650485437  (acc)       0.44018513856555247  (F1-Score)
+        validate:        0.013887783857909116  (loss)    0.4025182417781116  (acc)       0.4025182417781116  (F1-Score)
+Epoch  62
+        train:   1.0577190272437715  (loss)      0.43173543689320387  (acc)      0.4300705556694013  (F1-Score)
+        validate:        0.013902566008495562  (loss)    0.3908499429121158  (acc)       0.3908499429121158  (F1-Score)
+Epoch  63
+        train:   1.0538682327108475  (loss)      0.4429611650485437  (acc)       0.43917465200058853  (F1-Score)
+        validate:        0.014231704789580722  (loss)    0.3820496363982388  (acc)       0.3820496363982388  (F1-Score)
+Epoch  64
+        train:   1.0589851537375774  (loss)      0.43234223300970875  (acc)      0.4295136244755475  (F1-Score)
+        validate:        0.013926175444415122  (loss)    0.41021865079656855  (acc)      0.41021865079656855  (F1-Score)
+Epoch  65
+        train:   1.0564454704233743  (loss)      0.42824635922330095  (acc)      0.424677432331176  (F1-Score)
+        validate:        0.013912433114918795  (loss)    0.40109632391235284  (acc)      0.40109632391235284  (F1-Score)
+Epoch  66
+        train:   1.0554749143933786  (loss)      0.4378033980582524  (acc)       0.43426540394055724  (F1-Score)
+        validate:        0.013817844878543506  (loss)    0.442636960138084  (acc)        0.442636960138084  (F1-Score)
+Epoch  67
+        train:   1.0533376495236333  (loss)      0.43370752427184467  (acc)      0.43029213742557976  (F1-Score)
+        validate:        0.01400730306451971  (loss)     0.3953604738254585  (acc)       0.3953604738254585  (F1-Score)
+Epoch  68
+        train:   1.0521540879045876  (loss)      0.44402305825242716  (acc)      0.44137068173082245  (F1-Score)
+        validate:        0.013831326257098805  (loss)    0.4159082762929017  (acc)       0.4159082762929017  (F1-Score)
+Epoch  69
+        train:   1.05726482277935  (loss)        0.4384101941747573  (acc)       0.43576810246055947  (F1-Score)
+        validate:        0.01397356444236004  (loss)     0.40965304771818806  (acc)      0.40965304771818806  (F1-Score)
+Epoch  70
+        train:   1.0523067735931249  (loss)      0.441747572815534  (acc)        0.43866611534897965  (F1-Score)
+        validate:        0.013763227516954595  (loss)    0.4459855705960269  (acc)       0.4459855705960269  (F1-Score)
+Epoch  71
+        train:   1.053359725810949  (loss)       0.4371966019417476  (acc)       0.4326438996698485  (F1-Score)
+        validate:        0.013773198163870608  (loss)    0.4655498532124403  (acc)       0.4655498532124403  (F1-Score)
+        Saved the model with accuracy:  0.4655498532124403
+Epoch  72
+        train:   1.0528231451233614  (loss)      0.4387135922330097  (acc)       0.4350244957791034  (F1-Score)
+        validate:        0.013995254030733397  (loss)    0.39698160953546324  (acc)      0.39698160953546324  (F1-Score)
+Epoch  73
+        train:   1.0524472108165037  (loss)      0.439623786407767  (acc)        0.43600548797321487  (F1-Score)
+        validate:        0.013776082252011155  (loss)    0.4461214344972657  (acc)       0.4461214344972657  (F1-Score)
+Epoch  74
+        train:   1.0474838356948593  (loss)      0.4441747572815534  (acc)       0.4403556996678211  (F1-Score)
+        validate:        0.014615023641875296  (loss)    0.24137086100737404  (acc)      0.24137086100737404  (F1-Score)
+Epoch  75
+        train:   1.0488365295442563  (loss)      0.4441747572815534  (acc)       0.4418649523804274  (F1-Score)
+        validate:        0.01386062308694377  (loss)     0.43972425369534657  (acc)      0.43972425369534657  (F1-Score)
+Epoch  76
+        train:   1.0457267058127135  (loss)      0.44918082524271846  (acc)      0.445765064355148  (F1-Score)
+        validate:        0.01410084180759661  (loss)     0.36792945285894213  (acc)      0.36792945285894213  (F1-Score)
+Epoch  77
+        train:   1.0511480506184032  (loss)      0.44129247572815533  (acc)      0.4387979290654468  (F1-Score)
+        validate:        0.0138589069518176  (loss)      0.39989477935275786  (acc)      0.39989477935275786  (F1-Score)
+Epoch  78
+        train:   1.0513703258870875  (loss)      0.43219053398058255  (acc)      0.4291100298981012  (F1-Score)
+        validate:        0.013750683854926716  (loss)    0.453700837187813  (acc)        0.453700837187813  (F1-Score)
+Epoch  79
+        train:   1.0520469861701853  (loss)      0.4409890776699029  (acc)       0.4380853712752228  (F1-Score)
+        validate:        0.013783094693313945  (loss)    0.42783614283318216  (acc)      0.42783614283318216  (F1-Score)
+Epoch  80
+        train:   1.049976173245791  (loss)       0.4399271844660194  (acc)       0.43694393796414316  (F1-Score)
+        validate:        0.013749979598955674  (loss)    0.4515153255750206  (acc)       0.4515153255750206  (F1-Score)
+Epoch  81
+        train:   1.0529199827064588  (loss)      0.44584344660194175  (acc)      0.44399413963936024  (F1-Score)
+        validate:        0.01381998152443857  (loss)     0.43432911310207467  (acc)      0.43432911310207467  (F1-Score)
+Epoch  82
+        train:   1.0498830904659715  (loss)      0.43461771844660196  (acc)      0.4328875710508849  (F1-Score)
+        validate:        0.013841689680561875  (loss)    0.411243653250158  (acc)        0.411243653250158  (F1-Score)
+Epoch  83
+        train:   1.051608194425268  (loss)       0.44159587378640774  (acc)      0.43954115159106927  (F1-Score)
+        validate:        0.01389788203167193  (loss)     0.42580807222710637  (acc)      0.42580807222710637  (F1-Score)
+Epoch  84
+        train:   1.0473392241209456  (loss)      0.44356796116504854  (acc)      0.44117577631697735  (F1-Score)
+        validate:        0.013690887536063338  (loss)    0.45647050596325156  (acc)      0.45647050596325156  (F1-Score)
+Epoch  85
+        train:   1.0469086468219757  (loss)      0.44538834951456313  (acc)      0.4443111301306644  (F1-Score)
+        validate:        0.013731682273474606  (loss)    0.4355519982706065  (acc)       0.4355519982706065  (F1-Score)
+Epoch  86
+        train:   1.051427032183675  (loss)       0.439623786407767  (acc)        0.4359853563965404  (F1-Score)
+        validate:        0.013773061073187626  (loss)    0.43791448410428624  (acc)      0.43791448410428624  (F1-Score)
+Epoch  87
+        train:   1.0462540104551223  (loss)      0.44796723300970875  (acc)      0.44551547063706626  (F1-Score)
+        validate:        0.013673993701284581  (loss)    0.46994810197886777  (acc)      0.46994810197886777  (F1-Score)
+        Saved the model with accuracy:  0.46994810197886777
+Epoch  88
+        train:   1.0541990625048148  (loss)      0.4341626213592233  (acc)       0.43151830717746487  (F1-Score)
+        validate:        0.013825682482936166  (loss)    0.4237945284641383  (acc)       0.4237945284641383  (F1-Score)
+Epoch  89
+        train:   1.0489334493007474  (loss)      0.44265776699029125  (acc)      0.4400984329945238  (F1-Score)
+        validate:        0.013708402234496493  (loss)    0.43174007447357005  (acc)      0.43174007447357005  (F1-Score)
+Epoch  90
+        train:   1.0486534229181346  (loss)      0.44690533980582525  (acc)      0.44469613205937997  (F1-Score)
+        validate:        0.013747805546630512  (loss)    0.428645012857157  (acc)        0.428645012857157  (F1-Score)
+Epoch  91
+        train:   1.0479891766043543  (loss)      0.44159587378640774  (acc)      0.43900486869886696  (F1-Score)
+        validate:        0.014319621920585633  (loss)    0.31854489114027534  (acc)      0.31854489114027534  (F1-Score)
+Epoch  92
+        train:   1.047924392431685  (loss)       0.4406856796116505  (acc)       0.43935072130470926  (F1-Score)
+        validate:        0.013660259517756375  (loss)    0.46222412959146675  (acc)      0.46222412959146675  (F1-Score)
+Epoch  93
+        train:   1.0500727686488514  (loss)      0.44508495145631066  (acc)      0.4420862929595569  (F1-Score)
+        validate:        0.013896829811009493  (loss)    0.4045095389127138  (acc)       0.4045095389127138  (F1-Score)
+Epoch  94
+        train:   1.0491301388416476  (loss)      0.4511529126213592  (acc)       0.44826789841003467  (F1-Score)
+        validate:        0.013696452288916616  (loss)    0.4637087061217574  (acc)       0.4637087061217574  (F1-Score)
+Epoch  95
+        train:   1.0493599106964555  (loss)      0.4387135922330097  (acc)       0.43457507130276457  (F1-Score)
+        validate:        0.013714944666082208  (loss)    0.4414246183988915  (acc)       0.4414246183988915  (F1-Score)
+Epoch  96
+        train:   1.045088001825277  (loss)       0.44478155339805825  (acc)      0.4428077495788883  (F1-Score)
+        validate:        0.01407829334338506  (loss)     0.37002555771485796  (acc)      0.37002555771485796  (F1-Score)
+Epoch  97
+        train:   1.045575034849852  (loss)       0.44432645631067963  (acc)      0.4426339615849404  (F1-Score)
+        validate:        0.014834701482093695  (loss)    0.22736298388999995  (acc)      0.22736298388999995  (F1-Score)
+Epoch  98
+        train:   1.0459884451430979  (loss)      0.4566140776699029  (acc)       0.45278393842508546  (F1-Score)
+        validate:        0.013675688803195953  (loss)    0.4545347540231809  (acc)       0.4545347540231809  (F1-Score)
+Epoch  99
+        train:   1.0511945679928492  (loss)      0.4365898058252427  (acc)       0.43263088404127664  (F1-Score)
+        validate:        0.01380741475206433  (loss)     0.440593252727523  (acc)        0.440593252727523  (F1-Score)
+Epoch  100
+        train:   1.0466214829278224  (loss)      0.44371966019417475  (acc)      0.43925982252569534  (F1-Score)
+        validate:        0.013947537875536715  (loss)    0.3637172892708103  (acc)       0.3637172892708103  (F1-Score)
+Finished training, best model had an accuracy of  0.46994810197886777
