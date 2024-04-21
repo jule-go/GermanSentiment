@@ -1,0 +1,12 @@
+Distribution of samples across data splits
+	train: 	69.2%	6600 instances
+	dev: 	29.6%	2820 instances
+	test: 	1.3%	120 instances
+Distribution of labels within data splits:
+	train: 	33%	[2200] negative instances		33%	[2200] neutral instances		33%	[2200] positive instances		
+	dev: 	33%	[940] negative instances		33%	[940] neutral instances		33%	[940] positive instances		
+	test: 	33%	[40] negative instances		33%	[40] neutral instances		33%	[40] positive instances		
+Distribution of data sources of the samples across the splits: 
+	train: {'en_twitter_sentiment': 3000, 'en_multilan_amazon': 3000, 'de_multilan_amazon': 300, 'de_twitter_sentiment': 300}
+	dev: {'en_twitter_sentiment': 1284, 'en_multilan_amazon': 1284, 'de_multilan_amazon': 126, 'de_twitter_sentiment': 126}
+	test: {'de_multilan_amazon': 60, 'de_twitter_sentiment': 60}

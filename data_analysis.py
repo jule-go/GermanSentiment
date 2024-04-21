@@ -94,8 +94,8 @@ def analyze_dataset(dataset,printing=False,path_for_report=None):
 # load data and analyze it
 with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
     ids = pickle.load(file)
-train_ids = ids["de_train_small"]
-dev_ids = ids["de_dev_small"]
+train_ids = ids["en_train_large"]#+ids["de_train_small"]
+dev_ids = ids["en_dev_large"]#+ids["de_dev_small"]
 test_ids = ids["de_test"] 
 
 # with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translations.pkl', 'rb') as file:
@@ -107,4 +107,4 @@ dev_data = data_loading.load_own_dataset(dataset,dev_ids,None)
 test_data = data_loading.load_own_dataset(dataset,test_ids,None)
 
 # call the actual analysis
-analyze_dataset([train_data,dev_data,test_data],True,"/mount/studenten-temp1/users/godberja/GermanSentiment/analysis/german_small_analysis.txt")
+analyze_dataset([train_data,dev_data,test_data],True,"/mount/studenten-temp1/users/godberja/GermanSentiment/analysis/english_large_analysis.txt")
