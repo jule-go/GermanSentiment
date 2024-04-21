@@ -1,0 +1,30 @@
+Accuracy: 0.4
+F1-score: 0.38750321636316853
+Confidence of model: 0.364[avg]	0.008[std dev]	0.34[min]	0.383[max]	0.364[median]
+Confusion matrix: 
+[[11  4 25]
+ [12 12 16]
+ [ 8  7 25]]
+Built-in analysis: 
+              precision    recall  f1-score   support
+
+           0       0.35      0.28      0.31        40
+           1       0.52      0.30      0.38        40
+           2       0.38      0.62      0.47        40
+
+    accuracy                           0.40       120
+   macro avg       0.42      0.40      0.39       120
+weighted avg       0.42      0.40      0.39       120
+
+
+Let's look at differences between 'genres':
+Accuracy on twitter data only: 0.4
+Accuracy on review data only: 0.4
+Confusion matrix of twitter data: 
+[[ 0  4 16]
+ [ 1 12  7]
+ [ 1  7 12]]
+Confusion matrix of review data: 
+[[11  0  9]
+ [11  0  9]
+ [ 7  0 13]]
