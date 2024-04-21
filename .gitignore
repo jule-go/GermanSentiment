@@ -1,5 +1,6 @@
 # don't upload trained model checkpoints
-models/
+models/alt/
+*.pt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

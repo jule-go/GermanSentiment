@@ -1,12 +1,11 @@
 """ Author: Jule Godbersen (mailto:godbersj@tcd.ie)
-    Content of file: Evaluation of model performance """
+    Content of file: Evaluation of baseline model; similar to evaluation.py, only slight changes """
 
 import os
 import torch
 from torch import nn
 import data_loading as data_loading
 import pickle
-from model_definition import Classifier
 import numpy as np
 from datasets import load_dataset
 from sklearn import metrics
@@ -15,20 +14,17 @@ from sklearn.metrics import ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import numpy as np
 import json
+from germansentiment import SentimentModel
 
 
 # -----------------------------------------------------------------------------------------
 # [in this section one should change the values!]
 
-# specify on which GPU you want to run the model
-os.environ["CUDA_VISIBLE_DEVICES"] = "4" 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 # specify location of train/validation data
 with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
     ids = pickle.load(file)
-dev_ids = ids["en_dev_large"] # TODO
-test_ids = ids["de_test"] # TODO
+dev_ids = ids["de_dev_small"]
+test_ids = ids["de_test"]
 
 # load translations
 with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translations.pkl', 'rb') as file:
@@ -36,53 +32,29 @@ with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translatio
 
 # specify whether we need to look up translations
 translation_dev = None
-translation_test = None # TODO
-test_identifier = "german_test" # e.g. indicate for myself whether test data got translated # TODO
+translation_test = None
+test_identifier = "german_test" # e.g. indicate for myself whether test data got translated
 
-# specify where to load model from
-training_id = 220 # id of model to evaluate # TODO
-path_to_saved_model = "/mount/studenten-temp1/users/godberja/GermanSentiment/models/model_" + str(training_id) + ".pt"
 
 # specify where to save predictions to
-prediction_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/predictions_" +test_identifier+"_" + str(training_id) + ".pkl" 
-
-# adapter configuration that should be loaded
-pretrained_model_config = "roberta-base" # TODO
-adapter_config = "none" # TODO
-
-# use hyperparams find best to work during training
-
-# specify "size" of classification network and activation function
-classification_layer_size = 50 
-activation = nn.Tanh()
+prediction_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/predictions_" +test_identifier+"_baseline.pkl" 
 
 # load model
-model = Classifier(adapter_config=adapter_config,layer_size=classification_layer_size,activation=activation,device=device,pretrained_model=pretrained_model_config) 
-model = model.to(device) 
-model.load_state_dict(torch.load(path_to_saved_model))
-model.eval()
+model = SentimentModel()
 print("Model is loaded and ready to be evaluated")
 
 # set some hyperparams 
-batch_size = 32  
-loss_function = nn.CrossEntropyLoss() 
+batch_size = 32  # maybe try 32, 16, 64
+loss_function = nn.CrossEntropyLoss() # nn.L1Loss() # nn.MSELoss() # nn.CrossEntropyLoss()
 
-# specify random seed
-seed = 99  #24, 99 # TODO
 
 # -----------------------------------------------------------------------------------------
 # [don't change things in this section]
 
+device = torch.device("cpu")
+
 os.environ["HF_DATASETS_CACHE"] = "/mount/studenten-temp1/users/godberja/HuggingfaceCache" # TODO needed?
 os.environ["TRANSFORMERS_CACHE"] = "/mount/studenten-temp1/users/godberja/Cache" # TODO needed?
-
-print("Number of total params: ", sum(p.numel() for p in model.parameters()))
-print("Number of trained params: ", sum(p.numel() for p in model.parameters() if p.requires_grad))
-
-# set the seeds 
-np.random.seed(seed)
-torch.manual_seed(seed)
-torch.cuda.manual_seed(seed)
 
 # load the data
 dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache")
@@ -106,7 +78,6 @@ def test(model, test_data, loss_function, device):
     Returns:
         (float,float,float): Average accuracy of this epoch, Average loss of this epoch, F-score
     """
-    model.eval()
 
     losses,corrects,total = 0,0,0
     pred_labels_all = []
@@ -123,7 +94,22 @@ def test(model, test_data, loss_function, device):
         for label in gold_list:
             gold_labels_all.append(label)
 
-        output = model(texts)
+        # here we call the "baseline" model
+        _, probabilities = model.predict_sentiment(texts,output_probabilities=True)
+        output = []
+        for pred in probabilities:
+            output_temp = [0,0,0]
+            for (label,prob) in pred:
+                # print(label,prob)
+                if label == "negative":
+                    output_temp[0] = prob
+                elif label == "neutral":
+                    output_temp[1] = prob
+                else: # label == "positive"
+                    output_temp[2] = prob
+            output += [output_temp]
+        output = torch.tensor(output)
+
         loss = loss_function(output, labels)
 
         losses += loss.item()
@@ -173,7 +159,22 @@ def make_predictions(test_dataset,model,path_to_save_prediction_to):
             prediction["text"] = text
             prediction["gold"] = str(gold_label)
 
-            model_pred = model([text])
+            # use "baseline" model here
+            _, probabilities = model.predict_sentiment([text],output_probabilities=True)
+            model_pred = []
+            for pred in probabilities:
+                output_temp = [0,0,0]
+                for (label,prob) in pred:
+                    # print(label,prob)
+                    if label == "negative":
+                        output_temp[0] = prob
+                    elif label == "neutral":
+                        output_temp[1] = prob
+                    else: # label == "positive"
+                        output_temp[2] = prob
+                model_pred += [output_temp]
+            model_pred = torch.tensor(model_pred)
+
             model_pred_prob = torch.softmax(model_pred,dim=1)
             model_pred_label = torch.argmax(model_pred_prob,dim=1)
             prediction["pred"] = str(model_pred_label.item())
@@ -341,5 +342,5 @@ validateAndTest(model,dev_dataloader,test_dataloader,loss_function,test_data,pre
 # analyze predictions
 with open(prediction_path, 'rb') as file:
     predictions = pickle.load(file)
-analyze_quantitatively(predictions,dataset,True,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/model"+str(training_id)+"_"+test_identifier)
-order_samples_for_qualitative_analysis(predictions,translations,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/model"+str(training_id)+"_"+test_identifier+"_qualitative.json")
+analyze_quantitatively(predictions,dataset,True,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/baseline_model")
+order_samples_for_qualitative_analysis(predictions,translations,"/mount/studenten-temp1/users/godberja/GermanSentiment/evaluation/baseline_model_qualitative.json")
