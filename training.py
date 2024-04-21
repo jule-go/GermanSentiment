@@ -24,36 +24,43 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/ids.pkl', 'rb') as file:
     ids = pickle.load(file)
     
-train_ids = ids["en_train_large"]
+train_ids = ids["de_train_large"]#ids["de_train_small"], "en_train_large"
+# train_ids2 = ids["en_train_large"]
 print("Use ",len(train_ids)," datasamples for training")
-train_identifier = "english_train_large"
-dev_ids = ids["en_dev_large"]
+train_identifier = "german_train_large"#"german_train_large"
+
+dev_ids = ids["de_dev_large"]#ids["de_dev_small"], "en_train_large"
+# dev_ids2 = ids["en_dev_large"]
 print("Use ",len(dev_ids)," datasamples for evaluation")
-dev_identifier = "english_dev_large"
+dev_identifier = "german_dev_large"#"german_dev_large"
+
+# load translations
+with open('/mount/studenten-temp1/users/godberja/GermanSentiment/data/translations.pkl', 'rb') as file:
+    translations = pickle.load(file)
 
 # specify whether we need to look up translations
-translation_train = None
-translation_dev = None
+translation_train = None # translations, None
+translation_dev = None # translations, None
 
 # specifiy whether to optimize on accuracy (True) or on F1-Score
-acc_bool = True #False
+acc_bool = True # False, True
 
 # specify where to save the model later
-training_id = 113 # only used for us for logging the different hyperparameter effects # TODO
-saving_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/models/model_" + str(training_id) + ".pt"
+training_id = 7 # only used for us for logging the different hyperparameter effects # TODO
+saving_path = "/mount/studenten-temp1/users/godberja/GermanSentiment/training/model_" + str(training_id) + ".pt"
 
 # specify where you want to keep track of hyperparameter tuning
 logging_file = "/mount/studenten-temp1/users/godberja/GermanSentiment/training_logging.md"
 
 # configuration that should be loaded
-pretrained_model_config = "roberta-base"#"xlm-roberta-base"
-adapter_config = "none" # note the adapter  TODO
+pretrained_model_config = "roberta-base" # "xlm-roberta-base"
+adapter_config = "none" # note the adapter 
 
 # specify "size" of classification network
-classification_layer_size = 50 # 50, 100, 200 # TODO 100
+classification_layer_size = 50 #50 # 50, 100, 200 # TODO 
 
 # decide for activation function
-activation = nn.Tanh()#nn.ReLU() # nn.Tanh(), nn.ReLU() # TODO
+activation = nn.Tanh() # nn.ReLU() # nn.Tanh() # TODO
 
 # load model
 model = Classifier(adapter_config=adapter_config,layer_size=classification_layer_size,activation=activation,device=device,pretrained_model=pretrained_model_config) 
@@ -61,14 +68,14 @@ model = model.to(device)
 print("Model is loaded")
 
 # set some hyperparams for training 
-num_epochs = 10 # 5, 10, 50 # TODO
-batch_size = 8# 8, 16  # only use this small size, as I run into errors with GPU when using larger sizes
+num_epochs = 100 # 5, 10, 50 # TODO
+batch_size = 32# 16, 32 # TODO
 learning_rate = 0.001 # 0.005, 0.01, 0.001 # TODO
-loss_function = nn.MSELoss() # nn.CrossEntropyLoss(), nn.MSELoss() # TODO
+loss_function = nn.CrossEntropyLoss() # nn.CrossEntropyLoss(), nn.MSELoss() # TODO
 optimizer = torch.optim.AdamW(model.parameters(),lr=learning_rate) # AdamW, SGD # TODO
 
 # specify random seed
-seed = 99  #24 # TODO
+seed = 24 #24, 99# TODO
 
 # -----------------------------------------------------------------------------------------
 # [don't change things in this section]
@@ -88,9 +95,13 @@ torch.cuda.manual_seed(seed)
 # load the data
 dataset = load_dataset("Brand24/mms",cache_dir="/mount/studenten-temp1/users/godberja/HuggingfaceCache")
 train_data = data_loading.load_own_dataset(dataset,train_ids,translation_train)
+# train_data2 = data_loading.load_own_dataset(dataset,train_ids2,translations)
+# train_data = torch.utils.data.ConcatDataset([train_data1, train_data2])
 train_dataloader = data_loading.load_dataloader(train_data,batch_size)
 print("Training data is loaded")
 dev_data = data_loading.load_own_dataset(dataset,dev_ids,translation_dev)
+# dev_data2 = data_loading.load_own_dataset(dataset,dev_ids2,translations)
+# dev_data = torch.utils.data.ConcatDataset([dev_data1, dev_data2])
 dev_dataloader = data_loading.load_dataloader(dev_data,batch_size)
 print("Development data is loaded")
 
