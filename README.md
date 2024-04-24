@@ -35,3 +35,22 @@ Note: There might be additional ``TODO``s included. They highlight lines in whic
 * [``requirements.txt``](https://github.com/jule-go/GermanSentiment/blob/main/requirements.txt) contains requirements for python environment that are needed to run the code within this repository.
 * [``training.py``](https://github.com/jule-go/GermanSentiment/blob/main/training.py) lets one train a model on training data
 * [``training_logging.md``](https://github.com/jule-go/GermanSentiment/blob/main/training_logging.md) provides important parts of the overview of the hyperparameter tuning
+
+## Some information on the models
+When running my code, I was referring to the models via IDs, not via terms such as "train-test". Thus here is an overview where you can lookup the most import models.
+
+In the training-folder:
+| ID | Model description                                               |
+|----|-----------------------------------------------------------------|
+| 0  | trained on EN_large -> "translate-test"                         |
+| 1  | as ID0 but with other seed                                      |
+| 2  | trained on translation of EN_large -> "translate-train"         |
+| 3  | as ID2 but with other seed                                      |
+| 4  | trained on DE_small -> "low-resource"                           |
+| 5  | as ID4 but with other seed                                      |
+| 6  | trained on DE_large -> "high-resource"                          |
+| 7  | as ID6 but with other seed                                      |
+| 8  | trained on DE_small + translation of EN_large -> "all-resource" |
+| 9  | as ID8 but with other seed                                      |
+
+For the predictions and evaluations those IDs remain. Please note that ID0/1 are also used for the "zero-shot" configuration. "german_test" refers to the case where a model is evaluated on the German testdata. "english-test" refers to the case where a model is evaluated on the translation of the German testdata. In the filename "baseline_model" refers to the german-sentiment model.
